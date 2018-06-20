@@ -1,0 +1,33 @@
+version: '2.1'
+
+services:
+
+
+    aimeos-shop-php-image:
+        build:
+            dockerfile: ./docker/images/aimeos-shop-php-image.Dockerfile
+            args:
+                - UID=${UID:-1000}
+
+    aimeos-shop-nginx:
+        build:
+            dockerfile: ./docker/nginx/Dockerfile
+        links:
+            - aimeos-shop-php
+        container_name: aimeos-shop-nginx
+
+    aimeos-shop:
+        build:
+            dockerfile: ./docker/Dockerfile
+        container_name: aimeos-shop
+        links:
+            - aimeos-shop-php-image
+            - aimeos-shop-php
+            - aimeos-shop-nginx
+
+    aimeos-shop-php:
+        build:
+            dockerfile: ./docker/php/Dockerfile
+        container_name: aimeos-shop-php
+        depends_on:
+            - aimeos-shop-php-image 

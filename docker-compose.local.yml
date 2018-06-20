@@ -1,0 +1,34 @@
+version: '2.1'
+
+services:
+
+    aimeos-shop-php-image:
+        build:
+            context: ./projects/aimeos-shop
+
+    aimeos-shop:
+        build:
+            context: ./projects/aimeos-shop
+        volumes:
+            - ./projects/aimeos-shop:/var/www/aimeos-shop
+
+    aimeos-shop-php:
+        build:
+            context: ./projects/aimeos-shop
+        volumes:
+            - ./projects/aimeos-shop:/var/www/aimeos-shop
+
+    aimeos-shop-nginx:
+        build:
+            context: ./projects/aimeos-shop
+        expose:
+            - 80
+            - 443
+        ports:
+            - 48005:80
+        volumes:
+            - ./projects/aimeos-shop/public:/var/www/aimeos-shop/public
+networks:
+  default:
+    external:
+      name: docker_default
